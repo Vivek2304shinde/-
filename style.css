@@ -1,0 +1,512 @@
+/* =========================================================
+   AUTHENTIC GRAIN — Shared Design System
+   Short-form, high-visual, low-scroll certificate pages
+   ========================================================= */
+
+:root{
+  --ink:#15110d;
+  --white:#ffffff;
+  --ivory:#f4efe4;
+  --muted:#c9bfa9;
+
+  /* Hyderabadi Nawab — royal / culinary / warm */
+  --hn-a:#20140c;
+  --hn-b:#4a2a17;
+  --hn-c:#c98a3a;
+  --hn-d:#e8b978;
+
+  /* Indrayani — earth / morning / aroma */
+  --in-a:#241c12;
+  --in-b:#4b4326;
+  --in-c:#c9a24a;
+  --in-d:#8a9770;
+
+  --font-display:"Fraunces","Cormorant Garamond",serif;
+  --font-body:"Inter",-apple-system,sans-serif;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:var(--font-body);
+  background:var(--ink);
+  color:var(--ivory);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{display:block;width:100%;height:100%;object-fit:cover;}
+
+.skip-link{
+  position:absolute;left:-999px;top:0;background:var(--ivory);color:var(--ink);
+  padding:.6rem 1rem;z-index:999;
+}
+.skip-link:focus{left:1rem;top:1rem;}
+
+/* =========================================================
+   SCROLL-SNAP SHELL — the whole "little scroll" mechanism
+   ========================================================= */
+.panels{
+  height:100svh;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+  scrollbar-width:none;
+}
+.panels::-webkit-scrollbar{display:none;}
+
+.panel{
+  position:relative;
+  height:100svh;
+  width:100%;
+  scroll-snap-align:start;
+  scroll-snap-stop:always;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  overflow:hidden;
+  isolation:isolate;
+}
+.panel--start{ justify-content:flex-start; }
+
+.panel__media{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+}
+.panel__media img{
+  transform:scale(1.04);
+  transition:transform 2.4s var(--ease);
+}
+.panel.is-active .panel__media img{transform:scale(1);}
+
+.panel__scrim{
+  position:absolute;
+  inset:0;
+  z-index:-1;
+}
+.scrim--bottom{background:linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(10,7,4,.55) 65%, rgba(8,5,3,.92) 100%);}
+.scrim--full{background:linear-gradient(180deg, rgba(8,5,3,.55) 0%, rgba(8,5,3,.45) 40%, rgba(8,5,3,.85) 100%);}
+.scrim--center{background:radial-gradient(120% 90% at 50% 55%, rgba(8,5,3,.35) 0%, rgba(8,5,3,.82) 100%);}
+
+.panel__body{
+  position:relative;
+  padding:1.75rem 1.5rem 3rem;
+  display:flex;
+  flex-direction:column;
+  gap:.9rem;
+  max-width:640px;
+}
+.panel__body.mid-body{
+  padding-top:32svh;
+  align-items:center;
+  text-align:center;
+}
+.panel__body.center-body{
+  margin:auto;
+  align-items:center;
+  text-align:center;
+  justify-content:center;
+  padding-bottom:1.5rem;
+}
+.panel__body.center-body.closing-body{
+  gap:.55rem;
+  padding-top:1.2rem;
+  padding-bottom:1.1rem;
+}
+.closing-body .tagline{ font-size:.86rem; }
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+.eyebrow{
+  font-family:var(--font-body);
+  font-size:.68rem;
+  letter-spacing:.28em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--muted);
+}
+
+.product-name{
+  font-family:var(--font-display);
+  font-weight:700;
+  color:var(--white);
+  font-size:clamp(2.4rem, 12vw, 3.4rem);
+  line-height:1.02;
+  letter-spacing:.005em;
+  text-shadow:0 6px 30px rgba(0,0,0,.45);
+  white-space:nowrap;
+}
+@media (min-width:540px){
+  .product-name{ font-size:clamp(3.4rem, 9vw, 5.2rem); white-space:normal; }
+}
+
+.headline{
+  font-family:var(--font-display);
+  font-weight:600;
+  color:var(--white);
+  font-size:clamp(1.7rem, 6.4vw, 2.6rem);
+  line-height:1.08;
+}
+
+.tagline{
+  font-family:var(--font-body);
+  font-size:clamp(.95rem, 3vw, 1.08rem);
+  color:var(--ivory);
+  opacity:.92;
+  font-weight:400;
+  max-width:32ch;
+}
+
+.tagline--strong{
+  font-weight:600;
+  opacity:1;
+}
+
+/* =========================================================
+   REVEAL
+   ========================================================= */
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .9s var(--ease), transform .9s var(--ease);}
+.panel.is-active .reveal{opacity:1; transform:translateY(0);}
+.reveal-d1{transition-delay:.08s;}
+.reveal-d2{transition-delay:.18s;}
+.reveal-d3{transition-delay:.28s;}
+.reveal-d4{transition-delay:.38s;}
+
+/* =========================================================
+   AUTHENTICITY SEAL
+   ========================================================= */
+.seal{
+  width:104px;
+  height:104px;
+  flex-shrink:0;
+  filter:drop-shadow(0 6px 18px rgba(0,0,0,.5));
+}
+.seal--lg{width:150px;height:150px;}
+.seal svg{width:100%;height:100%;}
+.seal .seal-ring-text{
+  animation:seal-spin 26s linear infinite;
+  transform-origin:50% 50%;
+}
+@media (prefers-reduced-motion: reduce){
+  .seal .seal-ring-text{animation:none;}
+}
+@keyframes seal-spin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+.topbar{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:1.1rem 1.25rem;
+  pointer-events:none;
+}
+.topbar__mark{
+  font-family:var(--font-body);
+  font-size:.68rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--white);
+  opacity:.85;
+  display:flex;
+  align-items:center;
+  gap:.45rem;
+}
+.topbar__mark::before{
+  content:"";
+  width:6px;height:6px;border-radius:50%;
+  background:currentColor;
+}
+.topbar__label{
+  font-size:.62rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* =========================================================
+   PROGRESS DOTS
+   ========================================================= */
+.dots{
+  position:fixed;
+  right:1rem;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:50;
+  display:flex;
+  flex-direction:column;
+  gap:.6rem;
+}
+.dots button{
+  width:7px;height:7px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.55);
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+  transition:all .35s var(--ease);
+}
+.dots button.is-active{
+  background:var(--white);
+  height:20px;
+  border-radius:5px;
+}
+
+/* =========================================================
+   SCROLL CUE
+   ========================================================= */
+.scroll-cue{
+  position:absolute;
+  bottom:1.1rem;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.4rem;
+  color:var(--muted);
+  font-size:.6rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  opacity:.85;
+}
+.scroll-cue__line{
+  width:1px;
+  height:26px;
+  background:linear-gradient(180deg, currentColor, transparent);
+  animation:cue-move 1.8s ease-in-out infinite;
+}
+@keyframes cue-move{
+  0%{opacity:.2; transform:scaleY(.4); transform-origin:top;}
+  50%{opacity:1; transform:scaleY(1); transform-origin:top;}
+  100%{opacity:.2; transform:scaleY(.4); transform-origin:top;}
+}
+
+/* =========================================================
+   QUICK FACTS ROW (trust panel)
+   ========================================================= */
+.facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  justify-content:center;
+}
+.facts span{
+  font-size:.68rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-weight:600;
+  color:var(--ivory);
+  border:1px solid rgba(255,255,255,.28);
+  padding:.5rem .85rem;
+  border-radius:999px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(6px);
+}
+
+/* =========================================================
+   CERTIFICATE STRIP
+   ========================================================= */
+.cert-strip{
+  width:100%;
+  max-width:420px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:14px;
+  padding:1rem 1.1rem;
+  background:rgba(0,0,0,.28);
+  backdrop-filter:blur(10px);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.75rem 1rem;
+}
+.cert-strip__item{display:flex; flex-direction:column; gap:.15rem;}
+.cert-strip__k{
+  font-size:.58rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+.cert-strip__v{
+  font-family:var(--font-display);
+  font-size:1.02rem;
+  font-weight:600;
+  color:var(--white);
+}
+
+/* =========================================================
+   CTA
+   ========================================================= */
+.cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.65rem;
+  justify-content:center;
+}
+.btn{
+  font-family:var(--font-body);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  font-weight:700;
+  padding:.85rem 1.4rem;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.6);
+  color:var(--white);
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+}
+.btn--solid{
+  background:var(--white);
+  color:var(--ink);
+  border-color:var(--white);
+}
+
+.brand-final{
+  font-family:var(--font-display);
+  font-size:.9rem;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* =========================================================
+   SWEET NOTE / SIGNATURE (closing panel)
+   ========================================================= */
+.note-label{
+  font-size:.64rem;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--muted);
+  opacity:.9;
+}
+
+.greeting{
+  font-family:var(--font-display);
+  font-weight:700;
+  color:var(--white);
+  font-size:clamp(2.3rem, 11vw, 3.4rem);
+  line-height:1;
+  text-shadow:0 6px 26px rgba(0,0,0,.4);
+}
+.greeting--compact{
+  font-size:clamp(1.5rem, 6.6vw, 2.05rem);
+  line-height:1.16;
+  font-weight:600;
+}
+
+.sweet-note{
+  font-family:var(--font-body);
+  font-size:.92rem;
+  line-height:1.55;
+  color:var(--ivory);
+  opacity:.95;
+  max-width:36ch;
+  font-weight:400;
+}
+
+/* =========================================================
+   VISITING CARD — reference photo as-is, animated shine sweep
+   ========================================================= */
+.ref-card{
+  display:block;
+  position:relative;
+  width:100%;
+  max-width:320px;
+  margin:0 auto;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 16px 34px rgba(0,0,0,.55);
+  line-height:0;
+}
+.ref-card__bg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.ref-card::after{
+  content:"";
+  position:absolute;
+  top:0; left:-75%;
+  width:45%;
+  height:100%;
+  background:linear-gradient(75deg,
+    transparent 0%,
+    rgba(255,255,255,.05) 35%,
+    rgba(255,255,255,.65) 50%,
+    rgba(255,255,255,.05) 65%,
+    transparent 100%);
+  transform:skewX(-18deg);
+  animation:cardShine 4.8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes cardShine{
+  0%   { left:-75%; }
+  16%  { left:135%; }
+  100% { left:135%; }
+}
+@media (prefers-reduced-motion: reduce){
+  .ref-card::after{ animation:none; display:none; }
+}
+
+/* =========================================================
+   THEME ACCENTS
+   ========================================================= */
+.theme-hn .eyebrow,
+.theme-hn .cert-strip__k,
+.theme-hn .topbar__label{ color:var(--hn-d); }
+.theme-hn .facts span{ border-color:rgba(232,185,120,.4); }
+.theme-hn .btn--solid{ background:var(--hn-d); border-color:var(--hn-d); color:var(--hn-a); }
+.theme-hn .signature-card{ border-color:rgba(232,185,120,.32); }
+.theme-hn .signature-card__label{ color:var(--hn-d); }
+.theme-hn .signature-card__phone svg{ color:var(--hn-d); }
+
+.theme-in .eyebrow,
+.theme-in .cert-strip__k,
+.theme-in .topbar__label{ color:var(--in-c); }
+.theme-in .facts span{ border-color:rgba(201,162,74,.4); }
+.theme-in .btn--solid{ background:var(--in-c); border-color:var(--in-c); color:var(--in-a); }
+.theme-in .signature-card{ border-color:rgba(201,162,74,.32); }
+.theme-in .signature-card__label{ color:var(--in-c); }
+.theme-in .signature-card__phone svg{ color:var(--in-c); }
+
+/* =========================================================
+   AROMA PARTICLES (Indrayani hero only)
+   ========================================================= */
+.aroma-particles{position:absolute; inset:0; z-index:-1; pointer-events:none;}
+.aroma-particle{
+  position:absolute;
+  width:3px;height:3px;
+  border-radius:50%;
+  background:rgba(255,232,185,.4);
+  filter:blur(1px);
+  animation:aroma-float 7s ease-in-out infinite;
+}
+@keyframes aroma-float{
+  0%{opacity:0; transform:translate3d(0,10px,0) scale(.6);}
+  25%{opacity:.7;}
+  70%{opacity:.35;}
+  100%{opacity:0; transform:translate3d(14px,-90px,0) scale(1.2);}
+}
+@media (prefers-reduced-motion: reduce){
+  .aroma-particle{animation:none; display:none;}
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (min-width:760px){
+  .panel__body{padding:2.5rem 3rem 4rem; max-width:720px;}
+  .cert-strip{max-width:520px;}
+}
